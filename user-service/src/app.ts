@@ -4,6 +4,7 @@ import helmet from "helmet";
 import cors from "cors";
 import { config } from "./configs/env.js";
 import { reqLogger } from "./middlewares/req.middleware.js";
+import { errorMiddleware } from "./middlewares/error.middleware.js";
 
 const app = express();
 
@@ -30,5 +31,7 @@ app.get("/health", (req, res) => {
     service: config.SERVICE_NAME,
   });
 });
+
+app.use(errorMiddleware);
 
 export { app };

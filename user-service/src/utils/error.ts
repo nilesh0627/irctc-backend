@@ -22,7 +22,7 @@ class AppError extends Error {
 
     this.name = this.constructor.name;
 
-    Error.captureStackTrace(this, this.constructor);
+    Error.captureStackTrace(this, this.constructor); // a .stack property on this object is there by default, this line customises that stack trace so from where to where trace should be there
   }
 }
 
