@@ -28,11 +28,6 @@ const errorMiddleware = (
       ? err
       : new InternalServerError("Internal Server error", err);
 
-  // safety check - if express has already started sending res bytes then move to next once instead of sending raw json again from line 43
-  if (res.headersSent) {
-    return next(error);
-  }
-
   logger.error(error.message, {
     type: error.id,
     statusCode: error.statusCode,
@@ -40,12 +35,17 @@ const errorMiddleware = (
     stack: error.stack,
   });
 
+  // safety check - if express has already started sending res bytes then move to next once instead of sending raw json again from line 43
+  if (res.headersSent) {
+    return next(error);
+  }
+
   res.status(error.statusCode).json({
     message: error.message,
     type: error.id,
     statusCode: error.statusCode,
-    cause: error?.cause,
-    stack: error.stack,
+    // cause: error?.cause,
+    // stack: error.stack,
   });
 };
 
